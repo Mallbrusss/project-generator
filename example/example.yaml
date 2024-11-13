@@ -1,0 +1,44 @@
+project_name: my_go_project
+directories:
+  - name: cmd
+    description: "Main entry point for the application"
+    subdirectories:
+      - name: app
+        description: "App main file"
+        files:
+          - name: main.go
+  - name: internal
+    description: "Internal packages for business logic"
+    subdirectories:
+      - name: handlers
+        description: "Core handlers logic"
+        files:
+          - name: user_handlers.go
+          - name: document_handlers.go
+      - name: service
+        description: "Core service logic"
+        files:
+          - name: user_service.go
+          - name: document_service.go
+      - name: repository
+        description: "Core repository logic"
+        files:
+          - name: user_repository.go
+          - name: document_repository.go
+      - name: utils
+        description: "Utility functions"
+        files:
+          - name: util.go
+      - name: "Server"
+        files:
+          - name: server.go
+        description: "Core server logic"
+  - name: pkg
+    description: "Reusable external packages"
+  - name: api
+    description: "API interfaces"
+# dependencies:
+#   - name: go
+#     version: "1.23.2"
+#   - name: docker
+#     version: "latest"
