@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 
 	directorylogic "github.com/Mallbrusss/project-generator/internal/directory_logic"
 	parselogic "github.com/Mallbrusss/project-generator/internal/parse_logic"
+	"github.com/Mallbrusss/project-generator/internal/template"
 )
 
 func main() {
@@ -45,8 +47,41 @@ func main() {
 
 	projectRoot := filepath.Join(*output, project.ProjectName)
 
-	for _, directory := range project.Directories{
+	for _, directory := range project.Directories {
 		directorylogic.CreateDirectoryStructure(projectRoot, directory)
 	}
+
+	fmt.Println("Docker ->",project.Docker)
+	if project.Docker {
+		template.CreateDockerfile(projectRoot)
+	}
 	
+	initializeGoProj(projectRoot, project.ProjectName)
+
+}
+
+func runCommand(command string, args ...string) {
+	cmd := exec.Command(command, args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err := cmd.Run()
+	if err != nil {
+		log.Printf("Error executing command '%s %v': %v\n", command, args, err)
+	} else {
+		log.Printf("Command '%s %v' executed successfully\n", command, args)
+	}
+}
+
+func initializeGoProj(basePath, projectName string) {
+	err := os.Chdir(basePath)
+	if err != nil {
+		log.Printf("Error changing directory to %s: %v\n", basePath, err)
+		return
+	}
+
+	runCommand("go", "mod", "init", projectName)
+
+	//TODO: Чекать зависимости в ямле
+	// runCommand("go", "get", "github.com/labstack/echo/v4")
 }

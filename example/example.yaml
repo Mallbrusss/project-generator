@@ -1,4 +1,4 @@
-project_name: my_go_project
+project_name: example_project
 directories:
   - name: cmd
     description: "Main entry point for the application"
@@ -37,6 +37,9 @@ directories:
     description: "Reusable external packages"
   - name: api
     description: "API interfaces"
+
+dockerfile: true
+
 # dependencies:
 #   - name: go
 #     version: "1.23.2"

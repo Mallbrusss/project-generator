@@ -29,4 +29,6 @@ func CreateDirectoryStructure(basePath string, directory models.Directory) {
 		template.CreateFileFromTemplate(dirPath, file, directory)
 	}
 
+	
+
 }

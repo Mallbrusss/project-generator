@@ -3,6 +3,7 @@ package models
 type Project struct {
 	ProjectName string      `yaml:"project_name"`
 	Directories []Directory `yaml:"directories"`
+	Docker      bool        `yaml:"dockerfile,omitempty"`
 }
 
 type Directory struct {
@@ -17,3 +18,4 @@ type File struct {
 	Template    string
 	Description string
 }
+

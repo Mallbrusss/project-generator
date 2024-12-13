@@ -5,6 +5,16 @@ import "fmt"
 
 // {{ .Description }}
 
-func {{ .PackageName }}{{ .FuncName }}(){
+func {{ .FuncName }}(){
 	fmt.Println("This is the {{ .PackageName }} package")
 }`
+
+var templates = map[string]string{
+	"main.go": `package main
+import "fmt"
+
+func main(){
+	fmt.Println("hello, world")
+}
+	`,
+}

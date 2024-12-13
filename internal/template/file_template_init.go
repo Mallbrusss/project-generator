@@ -12,15 +12,12 @@ import (
 func CreateFileFromTemplate(dirPath string, file models.File, directory models.Directory) {
 	filePath := filepath.Join(dirPath, file.Name)
 
-	// Проверяем, существует ли файл
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
-		// Получаем шаблон для этого файла
-		// templateStr, exists := templates[file.Name]
-		// if !exists {
-		// 	// Если специфического шаблона нет, используем дефолтный шаблон
-		// 	log.Printf("No template found for %s, using default template\n", file.Name)
-		templateStr := defaultTemplate
-		// }
+		templateStr, exists := templates[file.Name]
+		if !exists {
+			log.Printf("No template found for %s, using default template\n", file.Name)
+			templateStr = defaultTemplate
+		}
 
 		// Парсим шаблон
 		tmpl, err := template.New(file.Name).Parse(templateStr)
