@@ -1,0 +1,56 @@
+package main
+
+import (
+    "fmt"
+    "github.com/sirupsen/logrus"
+    "os"
+)
+
+func main() {
+	logrus.SetFormatter(&logrus.JSONFormatter{})
+
+	ctx, cancel := context.WithCancel(context.Background())
+
+	logrus.Info("Initialize the application")
+	var appInst *app.Application
+	appInst, err := app.Init(ctx)
+	if err != nil {
+		logrus.WithError(err).Fatal("Failed to initialize application")
+	}
+
+	logrus.Info("Initialize the application is success")
+
+	waitChan := make(chan os.Signal, 1)
+	signal.Notify(waitChan, syscall.SIGINT, syscall.SIGTERM)
+
+	go func() {
+		logrus.Info("Running the application")
+		err = appInst.Run(ctx)
+		if err != nil {
+			logrus.WithError(err).Fatal("app run failed")
+		}
+		logrus.Info("The application running success")
+	}()
+
+	s := server.NewServer()
+	go func() {
+		logrus.Info("Initialize the server")
+		s.Start()
+	}()
+
+	<-waitChan
+	logrus.Info("Received termination signal. Shutting down...")
+	if cancel != nil {
+		cancel()
+	}
+
+	if err := s.Stop(ctx); err != nil {
+		logrus.WithError(err).Error("Failed to shutdown server")
+	}
+
+	if err := appInst.Stop(); err != nil {
+		logrus.WithError(err).Error("Failed to shutdown application")
+	}
+
+	logrus.Info("Application exited gracefully")
+}

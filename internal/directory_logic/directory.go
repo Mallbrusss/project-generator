@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/Mallbrusss/project-generator/internal/models"
-	"github.com/Mallbrusss/project-generator/internal/template"
+	templateLogic "github.com/Mallbrusss/project-generator/internal/template_logic"
 )
 
 func CreateDirectoryStructure(basePath string, directory models.Directory) {
@@ -26,9 +26,12 @@ func CreateDirectoryStructure(basePath string, directory models.Directory) {
 	}
 
 	for _, file := range directory.Files {
-		template.CreateFileFromTemplate(dirPath, file, directory)
-	}
+		if file.Default {
+			templateLogic.CreateFileFromTemplate(dirPath, file, directory)
+		} else {
+			templateLogic.CreateEmptyFile(dirPath, file, directory)
+		}
 
-	
+	}
 
 }

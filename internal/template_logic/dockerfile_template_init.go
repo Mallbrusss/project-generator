@@ -1,10 +1,10 @@
-package template
+package template_logic
 
 import (
-	"html/template"
 	"log"
 	"os"
 	"path/filepath"
+	"text/template"
 )
 
 func CreateDockerfile(basePath string) {
@@ -22,17 +22,17 @@ func CreateDockerfile(basePath string) {
 	}
 
 	// Строим путь к шаблону относительно рабочей директории
-	tmplPath := filepath.Join(workingDir, "internal/template/dockerfile_template.go.tmpl")
+	tmplPath := filepath.Join(workingDir, "templates/dockerfile_template.go.tmpl")
 
 	tmpl, err := template.ParseFiles(tmplPath)
 	if err != nil {
-		log.Printf("Error parsing Dockerfile template: %v\n", err)
+		log.Printf("Error parsing Dockerfile template_logic: %v\n", err)
 		return
 	}
 
 	err = tmpl.Execute(f, nil)
 	if err != nil {
-		log.Printf("Error executing Dockerfile template: %v\n", err)
+		log.Printf("Error executing Dockerfile template_logic: %v\n", err)
 		return
 	}
 

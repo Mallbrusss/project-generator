@@ -1,4 +1,4 @@
-project_name: example_project
+project_name: example_service
 directories:
   - name: cmd
     description: "Main entry point for the application"
@@ -7,6 +7,7 @@ directories:
         description: "App main file"
         files:
           - name: main.go
+            default: true
   - name: internal
     description: "Internal packages for business logic"
     subdirectories:
@@ -14,6 +15,7 @@ directories:
         description: "Core handlers logic"
         files:
           - name: user_handlers.go
+            description: "user handlers logic"
           - name: document_handlers.go
       - name: service
         description: "Core service logic"
@@ -34,14 +36,13 @@ directories:
           - name: server.go
         description: "Core server logic"
   - name: pkg
+    subdirectories:
+        - name: postgres_client
+          files:
+            - name: postgres.go
+              default: true
     description: "Reusable external packages"
   - name: api
     description: "API interfaces"
 
 dockerfile: true
-
-# dependencies:
-#   - name: go
-#     version: "1.23.2"
-#   - name: docker
-#     version: "latest"

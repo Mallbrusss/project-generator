@@ -10,7 +10,7 @@ import (
 
 	directorylogic "github.com/Mallbrusss/project-generator/internal/directory_logic"
 	parselogic "github.com/Mallbrusss/project-generator/internal/parse_logic"
-	"github.com/Mallbrusss/project-generator/internal/template"
+	"github.com/Mallbrusss/project-generator/internal/template_logic"
 )
 
 func main() {
@@ -51,11 +51,14 @@ func main() {
 		directorylogic.CreateDirectoryStructure(projectRoot, directory)
 	}
 
-	fmt.Println("Docker ->",project.Docker)
+	//allFeatures := []models.Feature{
+	//	&pgx.PgxFeature{Enable: project.Contains("pgx")},
+	//}
+	//err = features.GenerateFeature(projectRoot, allFeatures)
 	if project.Docker {
-		template.CreateDockerfile(projectRoot)
+		template_logic.CreateDockerfile(projectRoot)
 	}
-	
+
 	initializeGoProj(projectRoot, project.ProjectName)
 
 }
@@ -81,6 +84,7 @@ func initializeGoProj(basePath, projectName string) {
 	}
 
 	runCommand("go", "mod", "init", projectName)
+	runCommand("go", "mod", "tidy")
 
 	//TODO: Чекать зависимости в ямле
 	// runCommand("go", "get", "github.com/labstack/echo/v4")
